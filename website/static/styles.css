@@ -1,0 +1,178 @@
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#counter {
+  font-size: 40px;
+}
+
+#soccer-field {
+  width: 759px;
+  height: 486px;
+  background-image: url("field.jpg");
+  position: relative;
+}
+
+.point {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  position: absolute;
+  cursor: move;
+}
+
+.point.temporary {
+  background-color: blue;
+}
+
+.point.confirmed {
+  background-color: red;
+}
+
+#add-button,
+#add-new-point {
+  margin-top: 10px;
+}
+
+#questions {
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+}
+
+.row label {
+  margin-right: 10px;
+}
+
+.row p {
+  margin-right: 10px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 20px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 2px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(20px);
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #2196F3;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0e81ce;
+}
+
+button:disabled {
+  background-color: #8ab3e6;
+}
+
+#add-new-point {
+  margin-top: 10px;
+}
+
+label, p, #situation-dropdown option {
+  font-size: 16px;
+}
+
+#situation-dropdown {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  padding: 5px 30px 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  font-size: 16px;
+  color: #333;
+}
+
+#situation-dropdown::after {
+  content: '\25BE'; 
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+#situation-dropdown option {
+  background-color: #fff;
+  color: #333;
+}
+
+.info-icon {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 9999;
+  color: #2196F3; 
+}
+
+.tooltip {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  color: #000;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  display: none;
+  z-index: 9999;
+  width: 20vw; 
+  height: auto; 
+}

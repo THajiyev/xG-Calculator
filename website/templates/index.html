@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>xG Calculator</title>
+  <link rel="stylesheet" href="../static/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+  <div class="info-icon" onmouseover="changeTooltipDisplay(true)" onmouseout="changeTooltipDisplay(false)">
+    <i class="fas fa-info-circle"></i>
+    <div class="tooltip" id="tooltip">
+      <p>Opponent's goal is situated on the left side. Click 'Add New Point' to place a blue dot, representing the new shot. Relocate it to the desired location and confirm. The xG counter updates after each shot.</p>
+    </div>
+  </div>
+  <label id="counter" class="counter">Total xG: 0</label>
+  <div id="soccer-field">
+  </div>
+  <br>
+  <button id="confirm-button">Confirm Point</button>
+  <button id="add-new-point">Add New Point</button>
+  <div id="questions" hidden>
+    <br>
+    <div class="row">
+      <label for="situation-dropdown">Select an option:</label>
+      <select id="situation-dropdown">
+        <option value="Other" selected>Other</option>
+        <option value="Throughball">Throughball</option>
+        <option value="Standard">Standard</option>
+        <option value="Rebound">Rebound</option>
+        <option value="Cross">Cross</option>
+        <option value="Penalty">Penalty</option>
+      </select>
+    </div>
+    <div class="row">
+      <p>Was the shot taken with a foot?</p>
+      <label class="switch">
+        <input type="checkbox" id="foot-switch" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+  <script src="../static/script.js"></script>
+</body>
+</html>
+
+
+
+
+
+
