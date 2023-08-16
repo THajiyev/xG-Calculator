@@ -1,0 +1,8 @@
+aiohttp==3.7.4
+Flask==2.2.2
+joblib==1.2.0
+matplotlib==3.5.3
+numpy==1.23.1
+pandas==2.0.3
+scikit_learn==1.1.2
+understat==0.1.7
