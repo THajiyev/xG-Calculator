@@ -1,0 +1,10 @@
+understat
+aiohttp
+supabase
+python-dotenv
+xgboost
+scikit-learn
+joblib
+pandas
+numpy
+huggingface_hub
