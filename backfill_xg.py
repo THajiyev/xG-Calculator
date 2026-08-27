@@ -49,6 +49,36 @@ def fetch_null_shots(limit=50000):
     print(f'Fetched {len(all_shots)} null shots')
     return pd.DataFrame(all_shots)
 
+def _resolve_estimator(model_obj):
+    candidates = []
+
+    if hasattr(model_obj, 'calibrated_classifiers_'):
+        candidates.extend(getattr(model_obj, 'calibrated_classifiers_', []))
+
+    for attr in ['estimator', 'base_estimator']:
+        if hasattr(model_obj, attr):
+            candidates.append(getattr(model_obj, attr))
+
+    for candidate in candidates:
+        if candidate is None:
+            continue
+        if hasattr(candidate, 'get_booster'):
+            return candidate
+
+    if hasattr(model_obj, 'get_booster'):
+        return model_obj
+
+    raise AttributeError(f'Could not resolve underlying estimator from model object. Attributes: {dir(model_obj)}')
+
+
+def _resolve_feature_names(model_obj):
+    estimator = _resolve_estimator(model_obj)
+    booster = estimator.get_booster()
+    if hasattr(booster, 'feature_names') and booster.feature_names is not None:
+        return booster.feature_names
+    raise AttributeError(f'Could not resolve feature names from estimator. Type: {type(estimator).__name__}')
+
+
 def predict_and_write(shots):
     own_goals = shots[shots['result'] == 'OwnGoal']
     penalties = shots[shots['situation'] == 'Penalty']
@@ -84,14 +114,7 @@ def predict_and_write(shots):
     to_predict['in_six_yard_box'] = ((to_predict['x'] > 0.88) & (to_predict['y'].between(0.35, 0.65))).astype(int)
     to_predict['in_penalty_box'] = ((to_predict['x'] > 0.70) & (to_predict['y'].between(0.2, 0.8))).astype(int)
     shot_ids = to_predict['id'].tolist()
-    calibrated = model.calibrated_classifiers_[0]
-    if hasattr(calibrated, 'estimator'):
-        estimator = calibrated.estimator
-    elif hasattr(calibrated, 'base_estimator'):
-        estimator = calibrated.base_estimator
-    else:
-        raise AttributeError(f'Could not find estimator. Attributes: {dir(calibrated)}')
-    model_features = estimator.get_booster().feature_names
+    model_features = _resolve_feature_names(model)
     df_aligned = to_predict.drop(columns=['id'], errors='ignore').reindex(columns=model_features, fill_value=0)
     preds = model.predict_proba(df_aligned)[:, 1]
     updates_dict = {}
