@@ -107,27 +107,24 @@ async def update_players(understat, league, season):
 
 
 async def run_incremental_update():
-    current_season = get_current_season()
-    seasons_to_update = [current_season - 1, current_season]
-    print(f"Updating seasons: {seasons_to_update}")
-
+    season = get_current_season()
+    print(f"Updating seasons: {season}")
     for league in LEAGUES:
-        for season in seasons_to_update:
-            try:
-                async with aiohttp.ClientSession() as session:
-                    understat = Understat(session)
-                    print(f"Updating {league} {season}...")
+        try:
+            async with aiohttp.ClientSession() as session:
+                understat = Understat(session)
+                print(f"Updating {league} {season}...")
 
-                    shots   = await update_shots(understat, league, season)
-                    matches = await update_matches(understat, league, season)
-                    players = await update_players(understat, league, season)
+                shots   = await update_shots(understat, league, season)
+                matches = await update_matches(understat, league, season)
+                players = await update_players(understat, league, season)
 
-                    if shots:   upsert("shots",   shots)
-                    if matches: upsert("matches", matches)
-                    if players: upsert("players", players)
+                if shots:   upsert("shots",   shots)
+                if matches: upsert("matches", matches)
+                if players: upsert("players", players)
 
-            except Exception as e:
-                print(f"  FAILED {league} {season}: {e}")
+        except Exception as e:
+            print(f"  FAILED {league} {season}: {e}")
 
 
 def backfill_model_xg(model, X, shot_ids):

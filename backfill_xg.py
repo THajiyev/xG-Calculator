@@ -50,20 +50,11 @@ def fetch_null_shots(limit=50000):
     return pd.DataFrame(all_shots)
 
 def _resolve_estimator(model_obj):
-    candidates = []
-
-    if hasattr(model_obj, 'calibrated_classifiers_'):
-        candidates.extend(getattr(model_obj, 'calibrated_classifiers_', []))
-
-    for attr in ['estimator', 'base_estimator']:
-        if hasattr(model_obj, attr):
-            candidates.append(getattr(model_obj, attr))
-
-    for candidate in candidates:
-        if candidate is None:
-            continue
-        if hasattr(candidate, 'get_booster'):
-            return candidate
+    for calibrated in getattr(model_obj, 'calibrated_classifiers_', []):
+        for attr in ['estimator', 'base_estimator']:
+            candidate = getattr(calibrated, attr, None)
+            if candidate is not None and hasattr(candidate, 'get_booster'):
+                return candidate
 
     if hasattr(model_obj, 'get_booster'):
         return model_obj
